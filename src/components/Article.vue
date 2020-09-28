@@ -1,13 +1,12 @@
 <template>
   <div class="article">
     <div class="article-title">
-      微信红包的随机算法是怎样实现的
+     {{subject}}
     </div>
     <div class="article-wrapper">
       <img src="@/assets/images/img1.jpg" alt="">
       <p>
-        随着国内智能手机用户增长放缓，新应用或游戏获取用户、提升付费转化率的成本越来越高。走出中国市场，去海外开辟更广阔的用户群成了互联网公司和开发者自然而然的选择。
-        实际上，在过去几年里已经有不少在海外获得不错成绩的中国公司，比如猎豹、APUS、久邦数码等等。他们的产品有个共同点，是工具属性极强，很容易在初期凭借几个不可或缺的核心功能获得一大批用户，但是后续增长乏力。
+        {{description}}
       </p>
     </div>
   </div>
@@ -15,7 +14,7 @@
 
 <script>
 export default {
-
+ props:["subject","description","img"]
 }
 </script>
 

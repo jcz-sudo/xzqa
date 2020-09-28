@@ -2,7 +2,7 @@
   <div class="home">
     <!-- 顶部导航 -->
 
-    <div :class="{top_header:isFixed}">
+    <div :class="{top_header: isFixed}">
       <mt-header title="学前端,到学问">
           <div slot="right">
             <router-link to="/register">注册</router-link>
@@ -16,14 +16,11 @@
     <!-- 面板部分 -->
     
     <mt-tab-container v-model="active" swipeable>
-      <mt-tab-container-item id="ui" style="margin-bottom: 55px" :class="{itemMargin:isFixed}">
-        <my-article></my-article>
-        <my-article></my-article>
-        <my-article></my-article>
-        <my-article></my-article>
-        <my-article></my-article>
-        <my-article></my-article>
-      </mt-tab-container-item>
+      <keep-alive>
+        <mt-tab-container-item id="ui" style="margin-bottom: 55px" :class="{itemMargin:isFixed}">
+        <my-article v-for="(item,index) of articles" :key="index" :subject="item.subject" :description="item.description"></my-article>
+        </mt-tab-container-item>
+      </keep-alive>
       <mt-tab-container-item id="shopping">222</mt-tab-container-item>
       <mt-tab-container-item id="web">333</mt-tab-container-item>
       <mt-tab-container-item id="inter">444</mt-tab-container-item>
@@ -43,7 +40,10 @@ export default {
   data(){
     return {
       active:"ui",
-      isFixed:false
+      cid:"",
+      //滚动固定导航
+      isFixed:false,
+      articles:[]
     }
   },
   components: {
@@ -60,14 +60,37 @@ export default {
       }else{
         this.isFixed = false
       }
+    },
+  },
+  watch:{
+    cid:{
+      handler(){
+        switch(this.active){
+        case "ui":
+          this.cid="1"
+          break;
+        case "shopping":
+          this.cid="2"
+          break;
+        case "web":
+          this.cid = "3"
+          break;
+        case "inter":
+          this.cid = "4"
+          break;
+      }
+     },
+     immediate: true
     }
   },
   mounted() {
-    window.addEventListener("scroll",this.scrollHandle),
-    this.axios.get("/category",(res)=>{
-      console.log(res)
-    })
+    this.$http.get(`/article/lists?cid=${this.cid}&count=10`).then((res)=>{
+      this.articles = res.data.results
+      
+    }),
+    window.addEventListener("scroll",this.scrollHandle)
   },
+ 
 }
 </script>
 <style>
@@ -90,6 +113,9 @@ export default {
     margin-left: 5px;
   }
   .itemMargin{
-    margin-top: 90px;
+    margin-top: 85px;
+  }
+  .itemMargin::after{
+    display: table;
   }
 </style>

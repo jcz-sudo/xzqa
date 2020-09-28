@@ -13,7 +13,7 @@ import 'mint-ui/lib/style.min.css'
 Vue.use(MintUI)
 
 axios.defaults.baseURL = 'http://127.0.0.1:3000'
-Vue.prototype.axios = axios
+Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
 new Vue({
